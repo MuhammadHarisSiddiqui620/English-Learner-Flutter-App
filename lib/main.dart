@@ -1,8 +1,6 @@
 import 'package:english_learner_flutter_app/Screens/SplashScreen.dart';
 import 'package:flutter/material.dart';
 
-import 'Screens/BottomNavigationBar.dart';
-
 void main() {
   runApp(const MyApp());
 }
