@@ -10,7 +10,7 @@ class CustomTextContainer extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
-        color: const Color(0x7EA4BBF4),
+        color: const Color(0x7EBBCBF3),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20.0),

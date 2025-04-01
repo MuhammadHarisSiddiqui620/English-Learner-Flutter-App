@@ -1,3 +1,4 @@
+import 'package:english_learner_flutter_app/Screens/InitialOneTimeScreens/SecondScreen.dart';
 import 'package:english_learner_flutter_app/Screens/widgets/CustomTextButton.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,12 @@ class FirstScreen extends StatelessWidget {
             const Spacer(),
             Row(
               children: [
-                Expanded(child: CustomTextButton(text: "Ok, Let's go!")),
+                Expanded(
+                  child: CustomTextButton(
+                    text: "Ok, Let's go!",
+                    screen: () => SecondScreen(),
+                  ),
+                ),
               ],
             ),
           ],
