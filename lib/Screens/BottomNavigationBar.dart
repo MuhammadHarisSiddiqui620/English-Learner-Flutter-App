@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+
+import '../Data/WordModel.dart';
+import 'AchievementsScreen.dart';
+import 'DiaryScreen.dart';
+import 'HomeScreen.dart';
+import 'SavedScreen.dart'; // Adjust the import path if needed
 
 class BottomNavigationBarExample extends StatefulWidget {
   const BottomNavigationBarExample({super.key});
@@ -17,12 +24,30 @@ class _BottomNavigationBarExampleState
     fontWeight: FontWeight.bold,
   );
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text('Index 0: Home', style: optionStyle),
-    Text('Index 1: Diary', style: optionStyle),
-    Text('Index 2: Saved', style: optionStyle),
-    Text('Index 3: Achievements', style: optionStyle),
+  static final List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
+    DiaryScreen(),
+    SavedScreen(),
+    AchievementsScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _printWordsFromHive(); // Fetch and print Hive data
+  }
+
+  Future<void> _printWordsFromHive() async {
+    final box = await Hive.openBox<WordModel>('wordsBox');
+    for (int i = 0; i < box.length; i++) {
+      final word = box.getAt(i);
+      if (word != null) {
+        debugPrint(
+          'Word: ${word.word}, Noun: ${word.noun}, Adjective: ${word.adjective}, Verb: ${word.verb}, Description: ${word.description}',
+        );
+      }
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -69,8 +94,7 @@ class _BottomNavigationBarExampleState
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFFB9FF37) : Colors.transparent,
-          // ✅ Selected background color
-          borderRadius: BorderRadius.circular(12), // ✅ Rounded edges
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

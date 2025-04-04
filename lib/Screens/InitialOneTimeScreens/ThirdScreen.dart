@@ -1,8 +1,8 @@
 import 'package:english_learner_flutter_app/Screens/InitialOneTimeScreens/FourthScreen.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/CustomTextButton.dart';
-import '../widgets/CustomTextContainer.dart';
+import '../../widgets/CustomTextButton.dart';
+import '../../widgets/CustomTextContainer.dart';
 
 class ThirdScreen extends StatelessWidget {
   const ThirdScreen({super.key});
