@@ -35,3 +35,10 @@ const TextStyle newWord = TextStyle(
   fontSize: 20,
   fontWeight: FontWeight.w600,
 );
+
+const TextStyle wordNoun = TextStyle(
+  color: Color(0xFFC7DD1D),
+  fontFamily: 'OpenSans',
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+);

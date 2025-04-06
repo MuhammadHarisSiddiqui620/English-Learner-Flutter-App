@@ -20,14 +20,15 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       username: fields[0] as String,
       email: fields[1] as String,
       languageLevel: fields[2] as String,
-      favorites: (fields[3] as List).cast<String>(),
+      favoritesWord: (fields[3] as List).cast<WordModel>(),
+      seenWords: (fields[4] as List).cast<WordModel>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.username)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
       ..writeByte(2)
       ..write(obj.languageLevel)
       ..writeByte(3)
-      ..write(obj.favorites);
+      ..write(obj.favoritesWord)
+      ..writeByte(4)
+      ..write(obj.seenWords);
   }
 
   @override

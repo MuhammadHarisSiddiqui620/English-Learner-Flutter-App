@@ -1,8 +1,9 @@
 import 'package:english_learner_flutter_app/Screens/WordHeader.dart';
 import 'package:english_learner_flutter_app/widgets/WordContainer.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
-import '../constants.dart';
+import '../Data/WordModel.dart';
 
 class DiaryScreen extends StatefulWidget {
   const DiaryScreen({super.key});
@@ -12,79 +13,44 @@ class DiaryScreen extends StatefulWidget {
 }
 
 class _DiaryScreenState extends State<DiaryScreen> {
+  late Box<WordModel> box;
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(35),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => WordHeader()),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: WordContainer(),
-            ),
+    return FutureBuilder(
+      future: Hive.openBox<WordModel>('wordsBox'),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        final box = snapshot.data as Box<WordModel>;
+
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(35),
+          child: Column(
+            children: [
+              ...List.generate(box.length, (index) {
+                final word = box.getAt(index);
+                if (word == null) return SizedBox();
+
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => WordHeader(word: word)),
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: WordContainer(), // ✅ Pass word to container
+                  ),
+                );
+              }),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(10.0),
-                color: const Color(0xFFF5FFE5),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: 48,
-                      width: 48,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Color(0xFFB9FF37),
-                          width: 2.0,
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Center(
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("1", style: dateStyle),
-                                Text("Day", style: dayStyle),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Text("New word", style: wordHeader),
-                        Text("Tomorrow.", style: wordDummy),
-                      ],
-                    ),
-                    Image.asset('assets/images/saveWord.png'),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

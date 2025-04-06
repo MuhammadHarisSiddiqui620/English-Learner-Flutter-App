@@ -1,11 +1,12 @@
+import 'package:english_learner_flutter_app/Data/WordModel.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
-import '../widgets/CustomTextButton.dart';
-import 'InitialOneTimeScreens/SecondScreen.dart';
 
 class WordHeader extends StatefulWidget {
-  const WordHeader({super.key});
+  final WordModel word;
+
+  const WordHeader({super.key, required this.word});
 
   @override
   State<WordHeader> createState() => _WordHeaderState();
@@ -56,11 +57,34 @@ class _WordHeaderState extends State<WordHeader> {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Center(child: Text("Cannole", style: wordHeader)),
-                          const SizedBox(height: 40),
-
-                          // ✅ Show only when showText is true
+                          Center(
+                            child: Text(
+                              "\"${widget.word.word}\"",
+                              style: wordHeader,
+                            ),
+                          ),
+                          if (showText) const SizedBox(height: 8),
                           if (showText)
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Text(
+                                  "\"${widget.word.noun.isNotEmpty
+                                      ? widget.word.noun
+                                      : widget.word.adjective.isNotEmpty
+                                      ? widget.word.adjective
+                                      : widget.word.verb.isNotEmpty
+                                      ? widget.word.verb
+                                      : ''}\"",
+                                  style: wordNoun,
+                                ),
+                              ),
+                            ),
+
+                          if (!showText) const SizedBox(height: 40),
+                          if (showText) const SizedBox(height: 0),
+                          // ✅ Show only when showText is true
+                          if (!showText)
                             Container(
                               margin: const EdgeInsets.only(right: 17),
                               decoration: BoxDecoration(
@@ -73,6 +97,24 @@ class _WordHeaderState extends State<WordHeader> {
                                 style: wordDummy,
                               ),
                             ),
+                          if (showText)
+                            Container(
+                              height: 158,
+                              margin: const EdgeInsets.only(right: 17),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                color: Colors.transparent,
+                              ),
+                              padding: const EdgeInsets.all(20.0),
+
+                              // ✅ Make only the text scrollable
+                              child: SingleChildScrollView(
+                                child: Text(
+                                  "${widget.word.description.isNotEmpty ? widget.word.description : ''}",
+                                  style: dayStyle,
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -80,19 +122,37 @@ class _WordHeaderState extends State<WordHeader> {
                 ),
 
                 // 🟢 Green Parrot Tap
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        showText = !showText;
-                        debugPrint("showText= ${showText}");
-                      });
-                    },
-                    child: Image.asset('assets/images/greenParrot.png'),
+                if (showText)
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          showText = !showText;
+                          debugPrint("showText= ${showText}");
+                        });
+                      },
+                      child: Image.asset(
+                        'assets/images/greenParrot.png',
+                        height: 330,
+                      ),
+                    ),
                   ),
-                ),
+                if (!showText)
+                  Positioned(
+                    bottom: 0,
+                    right: 0,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          showText = !showText;
+                          debugPrint("showText= ${showText}");
+                        });
+                      },
+                      child: Image.asset('assets/images/greenParrot.png'),
+                    ),
+                  ),
 
                 // ✅ Button shown only when showText is true
                 if (showText)
@@ -100,9 +160,30 @@ class _WordHeaderState extends State<WordHeader> {
                     bottom: 20,
                     left: 48,
                     right: 48,
-                    child: CustomTextButton(
-                      text: "Ok",
-                      screen: () => SecondScreen(),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          Color(0xFFB9FF37),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                          horizontal: 5,
+                        ),
+                        child: Text(
+                          "Ok",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'OpenSans',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
               ],

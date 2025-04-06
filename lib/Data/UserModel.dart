@@ -1,3 +1,4 @@
+import 'package:english_learner_flutter_app/Data/WordModel.dart';
 import 'package:hive/hive.dart';
 
 part 'UserModel.g.dart';
@@ -14,12 +15,16 @@ class UserModel extends HiveObject {
   String languageLevel; // e.g., Beginner, Intermediate, Advanced
 
   @HiveField(3)
-  List<String> favorites; // Word IDs or word names
+  List<WordModel> favoritesWord; // Word IDs or word names
+
+  @HiveField(4)
+  List<WordModel> seenWords; // Word IDs or word names
 
   UserModel({
     required this.username,
     required this.email,
     required this.languageLevel,
-    required this.favorites,
+    required this.favoritesWord,
+    required this.seenWords,
   });
 }
