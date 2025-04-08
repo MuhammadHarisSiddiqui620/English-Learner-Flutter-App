@@ -73,7 +73,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: WordContainer(length: index),
+                    child: WordContainer(length: index, word: word),
                   ),
                 );
               }),
@@ -123,7 +123,10 @@ class _DiaryScreenState extends State<DiaryScreen> {
                             Text("Tomorrow.", style: wordDummy),
                           ],
                         ),
-                        Image.asset('assets/images/saveWord.png'),
+                        Visibility(
+                          visible: false,
+                          child: Image.asset('assets/images/saveWord.png'),
+                        ),
                       ],
                     ),
                   ),
