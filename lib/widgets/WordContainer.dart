@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class WordContainer extends StatefulWidget {
-  const WordContainer({super.key});
+  final int length;
+
+  const WordContainer({super.key, required this.length});
 
   @override
   State<WordContainer> createState() => _WordContainerState();
@@ -39,7 +41,7 @@ class _WordContainerState extends State<WordContainer> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("1", style: dateStyle),
+                        Text("${widget.length + 1}", style: dateStyle),
                         Text("Day", style: dayStyle),
                       ],
                     ),
@@ -49,7 +51,7 @@ class _WordContainerState extends State<WordContainer> {
             ),
             Column(
               children: [
-                Text("\"Word\"", style: wordHeader),
+                Text("\"Word ${widget.length + 1}\"", style: wordHeader),
                 Text("- \"1, 2\"", style: wordDummy),
               ],
             ),

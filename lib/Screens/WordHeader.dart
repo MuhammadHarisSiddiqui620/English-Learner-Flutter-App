@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 class WordHeader extends StatefulWidget {
-  final WordModel word;
+  final WordModel? word;
 
   const WordHeader({super.key, required this.word});
 
@@ -59,7 +59,7 @@ class _WordHeaderState extends State<WordHeader> {
                           const SizedBox(height: 8),
                           Center(
                             child: Text(
-                              "\"${widget.word.word}\"",
+                              "\"${widget.word?.word}\"",
                               style: wordHeader,
                             ),
                           ),
@@ -69,12 +69,12 @@ class _WordHeaderState extends State<WordHeader> {
                               child: Padding(
                                 padding: const EdgeInsets.all(20.0),
                                 child: Text(
-                                  "\"${widget.word.noun.isNotEmpty
-                                      ? widget.word.noun
-                                      : widget.word.adjective.isNotEmpty
-                                      ? widget.word.adjective
-                                      : widget.word.verb.isNotEmpty
-                                      ? widget.word.verb
+                                  "\"${widget.word!.noun.isNotEmpty
+                                      ? widget.word?.noun
+                                      : widget.word!.adjective.isNotEmpty
+                                      ? widget.word?.adjective
+                                      : widget.word!.verb.isNotEmpty
+                                      ? widget.word?.verb
                                       : ''}\"",
                                   style: wordNoun,
                                 ),
@@ -110,7 +110,7 @@ class _WordHeaderState extends State<WordHeader> {
                               // ✅ Make only the text scrollable
                               child: SingleChildScrollView(
                                 child: Text(
-                                  "${widget.word.description.isNotEmpty ? widget.word.description : ''}",
+                                  "${widget.word!.description.isNotEmpty ? widget.word?.description : ''}",
                                   style: dayStyle,
                                 ),
                               ),

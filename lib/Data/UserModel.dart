@@ -6,25 +6,18 @@ part 'UserModel.g.dart';
 @HiveType(typeId: 1)
 class UserModel extends HiveObject {
   @HiveField(0)
-  String username;
+  int userLevel;
 
   @HiveField(1)
-  String email;
+  List<WordModel> favoritesWord;
 
   @HiveField(2)
-  String languageLevel; // e.g., Beginner, Intermediate, Advanced
-
-  @HiveField(3)
-  List<WordModel> favoritesWord; // Word IDs or word names
-
-  @HiveField(4)
-  List<WordModel> seenWords; // Word IDs or word names
+  List<WordModel> seenWords;
 
   UserModel({
-    required this.username,
-    required this.email,
-    required this.languageLevel,
-    required this.favoritesWord,
-    required this.seenWords,
-  });
+    this.userLevel = 0,
+    List<WordModel>? favoritesWord,
+    List<WordModel>? seenWords,
+  }) : favoritesWord = favoritesWord ?? [],
+       seenWords = seenWords ?? [];
 }
