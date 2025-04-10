@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:is_first_run/is_first_run.dart';
 
+import 'BottomNavigationBar.dart';
 import 'InitialOneTimeScreens/FirstScreen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,7 +30,10 @@ class _SplashScreenState extends State<SplashScreen> {
         context,
         MaterialPageRoute(
           builder:
-              (context) => firstRun ? const FirstScreen() : const FirstScreen(),
+              (context) =>
+                  firstRun
+                      ? const FirstScreen()
+                      : const BottomNavigationBarExample(),
         ),
       );
     }
