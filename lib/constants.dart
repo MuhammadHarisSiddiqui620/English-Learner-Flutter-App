@@ -42,3 +42,31 @@ const TextStyle wordNoun = TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.w400,
 );
+
+const TextStyle homeScreenWord = TextStyle(
+  color: Colors.black,
+  fontFamily: 'OpenSans',
+  fontSize: 18,
+  fontWeight: FontWeight.w400,
+);
+
+const TextStyle homeScreenHeaders = TextStyle(
+  color: Color(0xFF131313),
+  fontFamily: 'OpenSans',
+  fontSize: 20,
+  fontWeight: FontWeight.w800,
+);
+
+const TextStyle levelText = TextStyle(
+  color: Colors.white,
+  fontFamily: 'OpenSans',
+  fontSize: 18,
+  fontWeight: FontWeight.w500,
+);
+
+const TextStyle levelInteger = TextStyle(
+  color: Colors.white,
+  fontFamily: 'OpenSans',
+  fontSize: 48,
+  fontWeight: FontWeight.w800,
+);
