@@ -70,3 +70,10 @@ const TextStyle levelInteger = TextStyle(
   fontSize: 48,
   fontWeight: FontWeight.w800,
 );
+
+const TextStyle daysStyle = TextStyle(
+  color: Color(0xFF131313),
+  fontFamily: 'OpenSans',
+  fontSize: 15,
+  fontWeight: FontWeight.w400,
+);

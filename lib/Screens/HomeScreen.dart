@@ -13,6 +13,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Box<UserModel> userBox;
+  final List<String> allDays = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 
   @override
   Widget build(BuildContext context) {
@@ -135,6 +136,48 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(height: 50),
                     Text("Study days:", style: homeScreenHeaders),
+                    SizedBox(height: 20),
+                    Wrap(
+                      spacing: 5,
+                      runSpacing: 10,
+                      children:
+                          allDays.map((day) {
+                            bool isStudied = user.studyDays.contains(day);
+                            int currentIndex = allDays.indexOf(
+                              _getCurrentDay(),
+                            );
+                            int dayIndex = allDays.indexOf(day);
+
+                            String imagePath;
+                            if (isStudied) {
+                              imagePath = 'assets/images/OpenedDay.png';
+                            } else if (dayIndex <= currentIndex) {
+                              imagePath = 'assets/images/NotOpenedDay.png';
+                            } else {
+                              imagePath = 'assets/images/inActiveDay.png';
+                            }
+
+                            return Column(
+                              children: [
+                                Image.asset(imagePath),
+                                const SizedBox(height: 5),
+                                Text(day, style: daysStyle),
+                              ],
+                            );
+                          }).toList(),
+                    ),
+                    SizedBox(height: 20),
+                    Center(
+                      child: Row(
+                        children: [
+                          Image.asset('assets/images/calendor.png'),
+                          SizedBox(width: 8),
+                          Text("data", style: daysStyle),
+                          SizedBox(width: 8),
+                          Text("data", style: daysStyle),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -143,6 +186,20 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
+  }
+
+  String _getCurrentDay() {
+    final now = DateTime.now();
+    const dayMap = {
+      DateTime.monday: "Mo",
+      DateTime.tuesday: "Tu",
+      DateTime.wednesday: "We",
+      DateTime.thursday: "Th",
+      DateTime.friday: "Fr",
+      DateTime.saturday: "Sa",
+      DateTime.sunday: "Su",
+    };
+    return dayMap[now.weekday]!;
   }
 
   UserModel _getOrCreateUser() {

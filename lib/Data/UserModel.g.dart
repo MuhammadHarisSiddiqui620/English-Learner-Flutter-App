@@ -18,21 +18,24 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
     };
     return UserModel(
       userLevel: fields[0] as int,
-      favoritesWord: (fields[1] as List).cast<WordModel>(),
-      seenWords: (fields[2] as List).cast<WordModel>(),
+      favoritesWord: (fields[1] as List?)?.cast<WordModel>(),
+      seenWords: (fields[2] as List?)?.cast<WordModel>(),
+      studyDays: (fields[3] as List?)?.cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.userLevel)
       ..writeByte(1)
       ..write(obj.favoritesWord)
       ..writeByte(2)
-      ..write(obj.seenWords);
+      ..write(obj.seenWords)
+      ..writeByte(3)
+      ..write(obj.studyDays);
   }
 
   @override

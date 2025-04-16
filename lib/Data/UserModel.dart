@@ -14,10 +14,15 @@ class UserModel extends HiveObject {
   @HiveField(2)
   List<WordModel> seenWords;
 
+  @HiveField(3)
+  List<String> studyDays;
+
   UserModel({
     this.userLevel = 0,
     List<WordModel>? favoritesWord,
     List<WordModel>? seenWords,
+    List<String>? studyDays,
   }) : favoritesWord = favoritesWord ?? [],
-       seenWords = seenWords ?? [];
+       seenWords = seenWords ?? [],
+       studyDays = studyDays ?? [];
 }

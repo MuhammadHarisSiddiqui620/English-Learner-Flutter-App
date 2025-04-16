@@ -42,9 +42,9 @@ class _BottomNavigationBarExampleState
     for (int i = 0; i < box.length; i++) {
       final word = box.getAt(i);
       if (word != null) {
-        debugPrint(
+        /*        debugPrint(
           'Word: ${word.word}, Noun: ${word.noun}, Adjective: ${word.adjective}, Verb: ${word.verb}, Description: ${word.description}',
-        );
+        );*/
       }
     }
   }

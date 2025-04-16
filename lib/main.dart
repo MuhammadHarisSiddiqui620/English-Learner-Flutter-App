@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Data/UserModel.dart';
 import 'Data/WordModel.dart';
@@ -24,6 +25,9 @@ Future<void> main() async {
 
   // Load words from JSON if empty
   await loadWordsIntoHive();
+
+  // 👉 Track app open BEFORE running the app
+  await trackAppOpen();
 
   runApp(const MyApp());
 }
@@ -47,4 +51,44 @@ Future<void> loadWordsIntoHive() async {
       await box.add(word);
     }
   }
+}
+
+Future<void> trackAppOpen() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  const dayMap = {
+    DateTime.monday: "Mo",
+    DateTime.tuesday: "Tu",
+    DateTime.wednesday: "We",
+    DateTime.thursday: "Th",
+    DateTime.friday: "Fr",
+    DateTime.saturday: "Sa",
+    DateTime.sunday: "Su",
+  };
+
+  String currentDay = dayMap[DateTime.now().weekday]!;
+
+  List<String> openedDays = prefs.getStringList('opened_days') ?? [];
+
+  if (!openedDays.contains(currentDay)) {
+    openedDays.add(currentDay);
+    await prefs.setStringList('opened_days', openedDays);
+
+    var userBox = await Hive.openBox<UserModel>('userBox');
+    UserModel user;
+
+    if (userBox.isEmpty) {
+      user = UserModel();
+      await userBox.add(user); // Add user to the box first
+    } else {
+      user = userBox.getAt(0)!;
+    }
+
+    if (!user.studyDays.contains(currentDay)) {
+      user.studyDays.add(currentDay);
+      await user.save();
+    }
+  }
+
+  print('App has been opened on these days: $openedDays');
 }
