@@ -1,7 +1,9 @@
+import 'package:english_learner_flutter_app/Screens/ParrotScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 import '../Data/WordModel.dart';
+import '../constants.dart';
 import 'AchievementsScreen.dart';
 import 'DiaryScreen.dart';
 import 'HomeScreen.dart';
@@ -23,6 +25,13 @@ class _BottomNavigationBarExampleState
     fontSize: 30,
     fontWeight: FontWeight.bold,
   );
+
+  final List<String> _appBarTitles = <String>[
+    'Home',
+    'Diary',
+    'Saved',
+    'Achievements',
+  ];
 
   static final List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
@@ -58,7 +67,23 @@ class _BottomNavigationBarExampleState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Main')),
+      appBar: AppBar(
+        title: Text(_appBarTitles[_selectedIndex], style: newWord),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 35),
+            child: GestureDetector(
+              child: Image.asset('assets/images/top_bar_parrot.png'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ParrotScreen()),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       bottomNavigationBar: BottomNavigationBar(
         items: [

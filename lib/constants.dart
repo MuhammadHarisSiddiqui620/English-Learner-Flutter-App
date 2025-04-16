@@ -84,3 +84,17 @@ const TextStyle activeDaysCount = TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.w400,
 );
+
+const TextStyle parrotHeader = TextStyle(
+  color: Color(0xFF000000),
+  fontFamily: 'OpenSans',
+  fontSize: 20,
+  fontWeight: FontWeight.w400,
+);
+
+const TextStyle parrotSubheader = TextStyle(
+  color: Color(0xFF000000),
+  fontFamily: 'OpenSans',
+  fontSize: 13,
+  fontWeight: FontWeight.w400,
+);

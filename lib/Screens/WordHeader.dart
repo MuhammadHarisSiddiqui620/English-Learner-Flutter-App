@@ -54,7 +54,12 @@ class _WordHeaderState extends State<WordHeader> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 40),
-                              Center(child: Text("DAY 23", style: wordHeader)),
+                              Center(
+                                child: Text(
+                                  "DAY ${user.showWords.length}",
+                                  style: wordHeader,
+                                ),
+                              ),
                               const SizedBox(height: 40),
                               Center(
                                 child: Text(
