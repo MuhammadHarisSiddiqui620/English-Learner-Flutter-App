@@ -77,3 +77,10 @@ const TextStyle daysStyle = TextStyle(
   fontSize: 15,
   fontWeight: FontWeight.w400,
 );
+
+const TextStyle activeDaysCount = TextStyle(
+  color: Color(0xFF0053FF),
+  fontFamily: 'OpenSans',
+  fontSize: 16,
+  fontWeight: FontWeight.w400,
+);

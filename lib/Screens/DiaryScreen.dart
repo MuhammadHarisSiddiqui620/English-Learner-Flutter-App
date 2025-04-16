@@ -38,8 +38,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
         final prefsBox = Hive.box('prefsBox');
         final now = DateTime.now();
 
-        if (user.seenWords.isEmpty && wordBox.isNotEmpty) {
-          user.seenWords.add(wordBox.getAt(0)!);
+        if (user.showWords.isEmpty && wordBox.isNotEmpty) {
+          user.showWords.add(wordBox.getAt(0)!);
           user.save();
           prefsBox.put('lastSeenUpdate', now);
         }
@@ -48,12 +48,12 @@ class _DiaryScreenState extends State<DiaryScreen> {
         final hoursPassed =
             lastSeenUpdate == null
                 ? 25
-                : now.difference(lastSeenUpdate!).inHours;
+                : now.difference(lastSeenUpdate!).inSeconds;
 
-        if (hoursPassed >= 24 && user.seenWords.length < wordBox.length) {
-          final nextWord = wordBox.getAt(user.seenWords.length);
+        if (hoursPassed >= 1 && user.showWords.length < wordBox.length) {
+          final nextWord = wordBox.getAt(user.showWords.length);
           if (nextWord != null) {
-            user.seenWords.add(nextWord);
+            user.showWords.add(nextWord);
             user.save();
             prefsBox.put('lastSeenUpdate', now);
           }
@@ -62,8 +62,8 @@ class _DiaryScreenState extends State<DiaryScreen> {
           padding: const EdgeInsets.all(35),
           child: Column(
             children: [
-              ...List.generate(user.seenWords.length, (index) {
-                final word = user.seenWords[index];
+              ...List.generate(user.showWords.length, (index) {
+                final word = user.showWords[index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -108,7 +108,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "${user.seenWords.length + 1}",
+                                    "${user.showWords.length + 1}",
                                     style: dateStyle,
                                   ),
                                   Text("Day", style: dayStyle),

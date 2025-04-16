@@ -77,7 +77,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text("5", style: levelInteger),
+                                Text(
+                                  user.userLevel.toString(),
+                                  style: levelInteger,
+                                ),
                                 Text("Your \n level", style: levelText),
                               ],
                             ),
@@ -91,19 +94,24 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text("Words studied:", style: homeScreenWord),
+                                SizedBox(height: 10),
                                 Text(
                                   "Total days in the app:",
                                   style: homeScreenWord,
                                 ),
+                                SizedBox(height: 10),
                                 Text(
                                   "Achievements received:",
                                   style: homeScreenWord,
                                 ),
+                                SizedBox(height: 10),
                                 Text(
                                   "Words to the next level:",
                                   style: homeScreenWord,
                                 ),
+                                SizedBox(height: 10),
                                 Text("Favorite Words:", style: homeScreenWord),
+                                SizedBox(height: 10),
                                 Text(
                                   "Parrots discovered:",
                                   style: homeScreenWord,
@@ -117,16 +125,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                   "${user.seenWords.length}",
                                   style: dateStyle,
                                 ),
-                                SizedBox(height: 7),
+                                SizedBox(height: 10),
                                 Text("data", style: dateStyle),
-                                SizedBox(height: 7),
+                                SizedBox(height: 10),
                                 Text("data", style: dateStyle),
-                                SizedBox(height: 7),
+                                SizedBox(height: 10),
+                                Text("data", style: dateStyle),
+                                SizedBox(height: 10),
                                 Text(
                                   "${user.favoritesWord.length}",
                                   style: dateStyle,
                                 ),
-                                SizedBox(height: 7),
+                                SizedBox(height: 10),
                                 Text("data", style: dateStyle),
                               ],
                             ),
@@ -166,15 +176,23 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           }).toList(),
                     ),
-                    SizedBox(height: 20),
-                    Center(
+                    SizedBox(height: 30),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 120),
                       child: Row(
                         children: [
-                          Image.asset('assets/images/calendor.png'),
+                          Image.asset(
+                            'assets/images/calendor.png',
+                            width: 24,
+                            height: 24,
+                          ),
                           SizedBox(width: 8),
-                          Text("data", style: daysStyle),
+                          Text(
+                            user.studyDays.length.toString(),
+                            style: activeDaysCount,
+                          ),
                           SizedBox(width: 8),
-                          Text("data", style: daysStyle),
+                          Text("Active data", style: daysStyle),
                         ],
                       ),
                     ),

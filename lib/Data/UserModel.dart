@@ -6,23 +6,27 @@ part 'UserModel.g.dart';
 @HiveType(typeId: 1)
 class UserModel extends HiveObject {
   @HiveField(0)
-  int userLevel;
+  int userLevel = 0;
 
   @HiveField(1)
   List<WordModel> favoritesWord;
 
   @HiveField(2)
-  List<WordModel> seenWords;
+  List<WordModel> showWords;
 
   @HiveField(3)
   List<String> studyDays;
 
+  @HiveField(4)
+  List<WordModel> seenWords;
+
   UserModel({
-    this.userLevel = 0,
     List<WordModel>? favoritesWord,
-    List<WordModel>? seenWords,
+    List<WordModel>? showWords,
     List<String>? studyDays,
+    List<WordModel>? seenWords,
   }) : favoritesWord = favoritesWord ?? [],
+       studyDays = studyDays ?? [],
        seenWords = seenWords ?? [],
-       studyDays = studyDays ?? [];
+       showWords = showWords ?? [];
 }
