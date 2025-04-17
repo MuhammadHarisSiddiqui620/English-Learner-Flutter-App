@@ -48,7 +48,7 @@ class _DiaryScreenState extends State<DiaryScreen> {
         final hoursPassed =
             lastSeenUpdate == null
                 ? 25
-                : now.difference(lastSeenUpdate!).inSeconds;
+                : now.difference(lastSeenUpdate!).inMinutes;
 
         if (hoursPassed >= 1 && user.showWords.length < wordBox.length) {
           final nextWord = wordBox.getAt(user.showWords.length);
