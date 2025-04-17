@@ -145,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: dateStyle,
                                 ),
                                 SizedBox(height: 15),
-                                Text("data", style: dateStyle),
+                                Text("1", style: dateStyle),
                               ],
                             ),
                           ],

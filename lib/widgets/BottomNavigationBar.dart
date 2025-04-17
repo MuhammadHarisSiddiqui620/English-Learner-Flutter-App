@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 import '../Data/WordModel.dart';
+import '../Screens/AchievementsScreen.dart';
+import '../Screens/DiaryScreen.dart';
+import '../Screens/HomeScreen.dart';
+import '../Screens/SavedScreen.dart'; // Adjust the import path if needed
 import '../constants.dart';
-import 'AchievementsScreen.dart';
-import 'DiaryScreen.dart';
-import 'HomeScreen.dart';
-import 'SavedScreen.dart'; // Adjust the import path if needed
 
 class BottomNavigationBarExample extends StatefulWidget {
   const BottomNavigationBarExample({super.key});
@@ -68,7 +68,10 @@ class _BottomNavigationBarExampleState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_appBarTitles[_selectedIndex], style: newWord),
+        title: Padding(
+          padding: const EdgeInsets.only(left: 35),
+          child: Text(_appBarTitles[_selectedIndex], style: newWord),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 35),

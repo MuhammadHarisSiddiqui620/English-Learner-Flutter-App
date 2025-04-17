@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:is_first_run/is_first_run.dart';
 
-import 'BottomNavigationBar.dart';
+import '../widgets/BottomNavigationBar.dart';
 import 'InitialOneTimeScreens/FirstScreen.dart';
 
 class SplashScreen extends StatefulWidget {

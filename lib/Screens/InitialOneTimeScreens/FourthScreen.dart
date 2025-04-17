@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/BottomNavigationBar.dart';
 import '../../widgets/CustomTextContainer.dart';
-import '../BottomNavigationBar.dart';
 
 class FourthScreen extends StatelessWidget {
   const FourthScreen({super.key});
