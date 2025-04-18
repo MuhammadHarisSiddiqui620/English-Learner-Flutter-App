@@ -72,5 +72,5 @@ To run the app locally on your device or emulator:
 
 1. Clone the repository:
    ```bash
-   https://github.com/MuhammadHarisSiddiqui620/Road-Rules-Mobile-App.git
+   https://github.com/MuhammadHarisSiddiqui620/English-Learner-Flutter-App.git
 
