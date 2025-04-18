@@ -48,6 +48,7 @@ class ThirdScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 50),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
                       onPressed: () {

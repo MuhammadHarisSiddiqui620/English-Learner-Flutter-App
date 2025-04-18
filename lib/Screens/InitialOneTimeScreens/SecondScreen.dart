@@ -26,6 +26,7 @@ class SecondScreen extends StatelessWidget {
                 Image.asset('assets/images/initalScreens.png'),
                 SizedBox(height: 50),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
                       onPressed: () {

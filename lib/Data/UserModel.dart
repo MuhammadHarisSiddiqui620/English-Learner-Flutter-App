@@ -20,13 +20,18 @@ class UserModel extends HiveObject {
   @HiveField(4)
   List<WordModel> seenWords;
 
+  @HiveField(5)
+  String selectedParrot;
+
   UserModel({
     List<WordModel>? favoritesWord,
     List<WordModel>? showWords,
     List<String>? studyDays,
     List<WordModel>? seenWords,
+    String? selectedParrot,
   }) : favoritesWord = favoritesWord ?? [],
        studyDays = studyDays ?? [],
        seenWords = seenWords ?? [],
-       showWords = showWords ?? [];
+       showWords = showWords ?? [],
+       selectedParrot = selectedParrot ?? 'assets/images/greenParrot.png';
 }

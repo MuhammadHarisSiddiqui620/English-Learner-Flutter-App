@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text("Study days:", style: homeScreenHeaders),
                     SizedBox(height: 20),
                     Wrap(
-                      spacing: 5,
+                      spacing: 10,
                       runSpacing: 10,
                       children:
                           allDays.map((day) {

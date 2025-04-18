@@ -152,10 +152,7 @@ class _WordHeaderState extends State<WordHeader> {
                               debugPrint("showText= ${showText}");
                             });
                           },
-                          child: Image.asset(
-                            'assets/images/greenParrot.png',
-                            height: 330,
-                          ),
+                          child: Image.asset(user.selectedParrot, height: 330),
                         ),
                       ),
                     if (!showText)
@@ -198,7 +195,7 @@ class _WordHeaderState extends State<WordHeader> {
                             debugPrint("User level: ${user.userLevel}");
                           },
 
-                          child: Image.asset('assets/images/greenParrot.png'),
+                          child: Image.asset(user.selectedParrot),
                         ),
                       ),
 

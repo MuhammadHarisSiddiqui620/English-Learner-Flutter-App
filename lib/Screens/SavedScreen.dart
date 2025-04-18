@@ -35,32 +35,41 @@ class _SavedScreenState extends State<SavedScreen> {
 
         UserModel user = _getOrCreateUser();
 
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(35),
-          child: Column(
-            children: [
-              ...List.generate(user.favoritesWord.length, (index) {
-                final word = user.favoritesWord[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => WordHeader(word: word)),
+        return user.favoritesWord.length <= 0
+            ? Center(
+              child: Text(
+                "There are no Favorites yet ❤",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              ),
+            )
+            : SingleChildScrollView(
+              padding: const EdgeInsets.all(35),
+              child: Column(
+                children: [
+                  ...List.generate(user.favoritesWord.length, (index) {
+                    final word = user.favoritesWord[index];
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => WordHeader(word: word),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: WordContainer(
+                          length: index,
+                          word: word,
+                          favoriteScreen: true,
+                        ),
+                      ),
                     );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: WordContainer(
-                      length: index,
-                      word: word,
-                      favoriteScreen: true,
-                    ),
-                  ),
-                );
-              }),
-            ],
-          ),
-        );
+                  }),
+                ],
+              ),
+            );
       },
     );
   }

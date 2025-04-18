@@ -27,7 +27,7 @@ class FourthScreen extends StatelessWidget {
               const Spacer(),
               Center(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextButton(
                       onPressed: () {
