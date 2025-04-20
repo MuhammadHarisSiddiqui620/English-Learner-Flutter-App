@@ -16,7 +16,7 @@ class WordHeader extends StatefulWidget {
 
 class _WordHeaderState extends State<WordHeader> {
   late Box<UserModel> userBox;
-  bool showText = false;
+  final ValueNotifier<bool> showText = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,6 @@ class _WordHeaderState extends State<WordHeader> {
         }
 
         userBox = Hive.box<UserModel>('userBox');
-
         UserModel user = _getOrCreateUser();
 
         return Scaffold(
@@ -82,155 +81,165 @@ class _WordHeaderState extends State<WordHeader> {
                                   style: wordHeader,
                                 ),
                               ),
-                              if (showText) const SizedBox(height: 8),
-                              if (showText)
-                                Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Text(
-                                      "\"${widget.word!.noun.isNotEmpty
-                                          ? widget.word?.noun
-                                          : widget.word!.adjective.isNotEmpty
-                                          ? widget.word?.adjective
-                                          : widget.word!.verb.isNotEmpty
-                                          ? widget.word?.verb
-                                          : ''}\"",
-                                      style: wordNoun,
-                                    ),
-                                  ),
-                                ),
 
-                              if (!showText) const SizedBox(height: 40),
-                              if (showText) const SizedBox(height: 0),
-                              // ✅ Show only when showText is true
-                              if (!showText)
-                                Container(
-                                  margin: const EdgeInsets.only(right: 17),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    color: const Color(0x7EBBCBF3),
-                                  ),
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Text(
-                                    "Tap me so I can tell you\n more about that word.",
-                                    style: wordDummy,
-                                  ),
-                                ),
-                              if (showText)
-                                Container(
-                                  height: 158,
-                                  margin: const EdgeInsets.only(right: 17),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                    color: Colors.transparent,
-                                  ),
-                                  padding: const EdgeInsets.all(20.0),
-
-                                  // ✅ Make only the text scrollable
-                                  child: SingleChildScrollView(
-                                    child: Text(
-                                      "${widget.word!.description.isNotEmpty ? widget.word?.description : ''}",
-                                      style: dayStyle,
-                                    ),
-                                  ),
-                                ),
+                              /// ✅ Only this part rebuilds
+                              ValueListenableBuilder<bool>(
+                                valueListenable: showText,
+                                builder: (context, value, _) {
+                                  return Column(
+                                    children: [
+                                      value
+                                          ? const SizedBox(height: 8)
+                                          : const SizedBox(height: 40),
+                                      if (value)
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Text(
+                                              "\"${widget.word!.noun.isNotEmpty
+                                                  ? widget.word?.noun
+                                                  : widget.word!.adjective.isNotEmpty
+                                                  ? widget.word?.adjective
+                                                  : widget.word!.verb.isNotEmpty
+                                                  ? widget.word?.verb
+                                                  : ''}\"",
+                                              style: wordNoun,
+                                            ),
+                                          ),
+                                        ),
+                                      value
+                                          ? Container(
+                                            height: 158,
+                                            margin: const EdgeInsets.only(
+                                              right: 17,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              color: Colors.transparent,
+                                            ),
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: SingleChildScrollView(
+                                              child: Text(
+                                                "${widget.word!.description.isNotEmpty ? widget.word?.description : ''}",
+                                                style: dayStyle,
+                                              ),
+                                            ),
+                                          )
+                                          : Container(
+                                            margin: const EdgeInsets.only(
+                                              right: 17,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                              color: const Color(0x7EBBCBF3),
+                                            ),
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Text(
+                                              "Tap me so I can tell you\n more about that word.",
+                                              style: wordDummy,
+                                            ),
+                                          ),
+                                    ],
+                                  );
+                                },
+                              ),
                             ],
                           ),
                         ),
                       ),
                     ),
 
-                    // 🟢 Green Parrot Tap
-                    if (showText)
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              showText = !showText;
-                              debugPrint("showText= ${showText}");
-                            });
-                          },
-                          child: Image.asset(user.selectedParrot, height: 330),
-                        ),
-                      ),
-                    if (!showText)
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: () async {
-                            setState(() {
-                              showText = true; // or toggle if needed
-                            });
+                    /// ✅ Parrot Image with tap
+                    ValueListenableBuilder<bool>(
+                      valueListenable: showText,
+                      builder: (context, value, _) {
+                        return Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: GestureDetector(
+                            onTap: () async {
+                              if (!value) {
+                                showText.value = true;
 
-                            // Ensure user.seenWords is initialized (defensive)
-                            user.seenWords = user.seenWords;
+                                user.seenWords = user.seenWords;
+                                if (widget.word != null &&
+                                    !user.seenWords.contains(widget.word)) {
+                                  user.seenWords.add(widget.word!);
+                                  await user.save();
+                                }
 
-                            // Add current word if it's not null and not already added
-                            if (widget.word != null &&
-                                !user.seenWords.contains(widget.word)) {
-                              user.seenWords.add(widget.word!);
-                              await user.save();
-                            }
+                                bool hasSeenFav = user.seenWords.any(
+                                  (seenWord) =>
+                                      user.favoritesWord.contains(seenWord),
+                                );
 
-                            // Level up every 3 words **and** if any seen word is also a favorite
-                            bool hasSeenFav = user.seenWords.any(
-                              (seenWord) =>
-                                  user.favoritesWord.contains(seenWord),
-                            );
+                                if (user.seenWords.length % 3 == 0 &&
+                                    hasSeenFav) {
+                                  user.userLevel += 1;
+                                  await user.save();
+                                  debugPrint(
+                                    "Level up! New level: ${user.userLevel}",
+                                  );
+                                }
 
-                            if (user.seenWords.length % 3 == 0 && hasSeenFav) {
-                              user.userLevel += 1;
-                              await user.save();
-                              debugPrint(
-                                "Level up! New level: ${user.userLevel}",
-                              );
-                            }
+                                debugPrint(
+                                  "Seen words count: ${user.seenWords.length}",
+                                );
+                                debugPrint("User level: ${user.userLevel}");
+                              } else {
+                                showText.value = false;
+                              }
 
-                            debugPrint(
-                              "Seen words count: ${user.seenWords.length}",
-                            );
-                            debugPrint("User level: ${user.userLevel}");
-                          },
-
-                          child: Image.asset(user.selectedParrot),
-                        ),
-                      ),
-
-                    // ✅ Button shown only when showText is true
-                    if (showText)
-                      Positioned(
-                        bottom: 20,
-                        left: 48,
-                        right: 48,
-                        child: TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              Color(0xFFB9FF37),
+                              debugPrint("showText= ${showText.value}");
+                            },
+                            child: Image.asset(
+                              user.selectedParrot,
+                              height: value ? 330 : null,
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 12,
-                              horizontal: 5,
+                        );
+                      },
+                    ),
+
+                    /// ✅ OK Button (only shown when showText is true)
+                    ValueListenableBuilder<bool>(
+                      valueListenable: showText,
+                      builder: (context, value, _) {
+                        if (!value) return const SizedBox();
+                        return Positioned(
+                          bottom: 20,
+                          left: 48,
+                          right: 48,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                Color(0xFFB9FF37),
+                              ),
                             ),
-                            child: Text(
-                              "Ok",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'OpenSans',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w900,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 5,
+                              ),
+                              child: Text(
+                                "Ok",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontFamily: 'OpenSans',
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w900,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
+                    ),
                   ],
                 );
               },
