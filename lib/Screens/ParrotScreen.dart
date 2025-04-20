@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
+import '../Data/UserModel.dart';
 import '../constants.dart';
 
 class ParrotScreen extends StatefulWidget {
@@ -10,6 +12,96 @@ class ParrotScreen extends StatefulWidget {
 }
 
 class _ParrotScreenState extends State<ParrotScreen> {
+  late Box<UserModel> userBox;
+  late UserModel currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    userBox = Hive.box<UserModel>('userBox');
+    currentUser = userBox.getAt(0)!; // assuming the current user is at index 0
+  }
+
+  void saveNewParrot(String newParrot) async {
+    currentUser.selectedParrot = newParrot;
+    await currentUser.save();
+  }
+
+  Widget buildParrotItem({
+    required String imagePath,
+    required String name,
+    required String description,
+    required bool isEquipped,
+  }) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              saveNewParrot(imagePath);
+            });
+            debugPrint('$name Clicked');
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xFFF8F8F8),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.asset(imagePath, height: 50, width: 50),
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(name, style: parrotHeader),
+                          Text(description, style: parrotSubheader),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    bottom: -60,
+                    right: 0,
+                    child: Container(
+                      width: 315,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color:
+                            isEquipped
+                                ? const Color(0xFFB9FF37)
+                                : const Color(0xFFD2D2D2),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "Equipped",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'OpenSans',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 70),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,7 +113,7 @@ class _ParrotScreenState extends State<ParrotScreen> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Color(0xFFE1FD0F),
+                color: const Color(0xFFE1FD0F),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(6.0),
@@ -37,324 +129,45 @@ class _ParrotScreenState extends State<ParrotScreen> {
             padding: const EdgeInsets.all(35.0),
             child: Column(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF8F8F8),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/greenParrot.png',
-                              height: 50,
-                              width: 50,
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Name parrots 1", style: parrotHeader),
-                                Text("Desc parrots 1", style: parrotSubheader),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          bottom: -60, // pushes it downward
-                          right: 0, // you can tweak this based on layout
-                          child: SizedBox(
-                            width: 315,
-                            height: 60,
-                            child: TextButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  const Color(0xFFB9FF37),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: 10,
-                                ),
-                                child: Text(
-                                  "Equipped",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                buildParrotItem(
+                  imagePath: 'assets/images/greenParrot.png',
+                  name: 'Name parrots 1',
+                  description: 'Desc parrots 1',
+                  isEquipped:
+                      currentUser.selectedParrot ==
+                      'assets/images/greenParrot.png',
                 ),
-                SizedBox(height: 70),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF8F8F8),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/lightGreenParrot.png',
-                              height: 50,
-                              width: 50,
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Name parrots 2", style: parrotHeader),
-                                Text("Desc parrots 2", style: parrotSubheader),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          bottom: -60, // pushes it downward
-                          right: 0, // you can tweak this based on layout
-                          child: SizedBox(
-                            width: 315,
-                            height: 60,
-                            child: TextButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  const Color(0xFFD2D2D2),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: 10,
-                                ),
-                                child: Text(
-                                  "Locked",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                buildParrotItem(
+                  imagePath: 'assets/images/lightGreenParrot.png',
+                  name: 'Name parrots 2',
+                  description: 'Desc parrots 2',
+                  isEquipped:
+                      currentUser.selectedParrot ==
+                      'assets/images/lightGreenParrot.png',
                 ),
-                SizedBox(height: 70),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF8F8F8),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/pinkParrot.png',
-                              height: 50,
-                              width: 50,
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Name parrots 3", style: parrotHeader),
-                                Text("Desc parrots 3", style: parrotSubheader),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          bottom: -60, // pushes it downward
-                          right: 0, // you can tweak this based on layout
-                          child: SizedBox(
-                            width: 315,
-                            height: 60,
-                            child: TextButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  const Color(0xFFD2D2D2),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: 10,
-                                ),
-                                child: Text(
-                                  "Locked",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                buildParrotItem(
+                  imagePath: 'assets/images/pinkParrot.png',
+                  name: 'Name parrots 3',
+                  description: 'Desc parrots 3',
+                  isEquipped:
+                      currentUser.selectedParrot ==
+                      'assets/images/pinkParrot.png',
                 ),
-                SizedBox(height: 70),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF8F8F8),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/blueParrot.png',
-                              height: 50,
-                              width: 50,
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Name parrots 4", style: parrotHeader),
-                                Text("Desc parrots 4", style: parrotSubheader),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          bottom: -60, // pushes it downward
-                          right: 0, // you can tweak this based on layout
-                          child: SizedBox(
-                            width: 315,
-                            height: 60,
-                            child: TextButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  const Color(0xFFD2D2D2),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: 10,
-                                ),
-                                child: Text(
-                                  "Locked",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                buildParrotItem(
+                  imagePath: 'assets/images/blueParrot.png',
+                  name: 'Name parrots 4',
+                  description: 'Desc parrots 4',
+                  isEquipped:
+                      currentUser.selectedParrot ==
+                      'assets/images/blueParrot.png',
                 ),
-                SizedBox(height: 70),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0xFFF8F8F8),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/purpleParrot.png',
-                              height: 50,
-                              width: 50,
-                            ),
-                            const SizedBox(width: 10),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Name parrots 5", style: parrotHeader),
-                                Text("Desc parrots 5", style: parrotSubheader),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          bottom: -60, // pushes it downward
-                          right: 0, // you can tweak this based on layout
-                          child: SizedBox(
-                            width: 315,
-                            height: 60,
-                            child: TextButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  const Color(0xFFD2D2D2),
-                                ),
-                              ),
-                              onPressed: () {},
-                              child: const Padding(
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 8,
-                                  horizontal: 10,
-                                ),
-                                child: Text(
-                                  "Locked",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: 'OpenSans',
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                buildParrotItem(
+                  imagePath: 'assets/images/purpleParrot.png',
+                  name: 'Name parrots 5',
+                  description: 'Desc parrots 5',
+                  isEquipped:
+                      currentUser.selectedParrot ==
+                      'assets/images/purpleParrot.png',
                 ),
               ],
             ),
