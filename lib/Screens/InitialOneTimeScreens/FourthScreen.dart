@@ -10,21 +10,28 @@ class FourthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 40),
+        child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            // Center content vertically
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Spacer(),
-              Center(child: Image.asset('assets/images/firstParrot.png')),
-              const SizedBox(height: 20),
-              CustomTextContainer(
-                text:
-                    "This is the end of our study, I have given you a lot of information on how to use the app, try to learn all the sections of the app yourself, I will be happy to teach you new words every day, good luck!",
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 25,
+                  vertical: 40,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // Center content vertically
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(child: Image.asset('assets/images/firstParrot.png')),
+                    const SizedBox(height: 20),
+                    CustomTextContainer(
+                      text:
+                          "This is the end of our study, I have given you a lot of information on how to use the app, try to learn all the sections of the app yourself, I will be happy to teach you new words every day, good luck!",
+                    ),
+                  ],
+                ),
               ),
-              const Spacer(),
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +79,7 @@ class FourthScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                           vertical: 12,
-                          horizontal: 5,
+                          horizontal: 1,
                         ),
                         child: Text(
                           'Thank you, here we go!',

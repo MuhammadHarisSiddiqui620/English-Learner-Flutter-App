@@ -209,9 +209,9 @@ class _WordHeaderState extends State<WordHeader> {
                       builder: (context, value, _) {
                         if (!value) return const SizedBox();
                         return Positioned(
-                          bottom: 20,
-                          left: 48,
-                          right: 48,
+                          bottom: 10,
+                          left: 45,
+                          right: 45,
                           child: TextButton(
                             onPressed: () {
                               Navigator.pop(context);

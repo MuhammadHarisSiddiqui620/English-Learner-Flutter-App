@@ -60,97 +60,104 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(height: 50),
                     Text("Statistics:", style: homeScreenHeaders),
                     SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Container(
-                          height: 246,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color(0xFFB9FF37),
-                            boxShadow: [BoxShadow(color: Colors.green)],
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Container(
+                            height: 246,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xFFB9FF37),
+                              boxShadow: [BoxShadow(color: Colors.green)],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 22,
+                                vertical: 16,
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    user.userLevel.toString(),
+                                    style: levelInteger,
+                                  ),
+                                  Text("Your \n level", style: levelText),
+                                ],
+                              ),
+                            ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 22,
-                              vertical: 16,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  user.userLevel.toString(),
-                                  style: levelInteger,
-                                ),
-                                Text("Your \n level", style: levelText),
-                              ],
-                            ),
+                          SizedBox(width: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Words studied:", style: homeScreenWord),
+                                  SizedBox(height: 15),
+                                  Text(
+                                    "Total days in the app:",
+                                    style: homeScreenWord,
+                                  ),
+                                  SizedBox(height: 15),
+                                  Text(
+                                    "Achievements received:",
+                                    style: homeScreenWord,
+                                  ),
+                                  SizedBox(height: 15),
+                                  Text(
+                                    "Words to the next level:",
+                                    style: homeScreenWord,
+                                  ),
+                                  SizedBox(height: 15),
+                                  Text(
+                                    "Favorite Words:",
+                                    style: homeScreenWord,
+                                  ),
+                                  SizedBox(height: 15),
+                                  Text(
+                                    "Parrots discovered:",
+                                    style: homeScreenWord,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: 60),
+                              Column(
+                                children: [
+                                  Text(
+                                    "${user.seenWords.length}",
+                                    style: dateStyle,
+                                  ),
+                                  SizedBox(height: 15),
+                                  Text(
+                                    user.showWords.length.toString(),
+                                    style: dateStyle,
+                                  ),
+                                  SizedBox(height: 15),
+                                  Text("2", style: dateStyle),
+                                  SizedBox(height: 15),
+                                  Text(
+                                    user.seenWords.length - 3 >= 0
+                                        ? (user.seenWords.length - 3).toString()
+                                        : "3",
+                                    style: dateStyle,
+                                  ),
+                                  SizedBox(height: 15),
+                                  Text(
+                                    "${user.favoritesWord.length}",
+                                    style: dateStyle,
+                                  ),
+                                  SizedBox(height: 15),
+                                  Text("1", style: dateStyle),
+                                ],
+                              ),
+                            ],
                           ),
-                        ),
-                        SizedBox(width: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Words studied:", style: homeScreenWord),
-                                SizedBox(height: 15),
-                                Text(
-                                  "Total days in the app:",
-                                  style: homeScreenWord,
-                                ),
-                                SizedBox(height: 15),
-                                Text(
-                                  "Achievements received:",
-                                  style: homeScreenWord,
-                                ),
-                                SizedBox(height: 15),
-                                Text(
-                                  "Words to the next level:",
-                                  style: homeScreenWord,
-                                ),
-                                SizedBox(height: 15),
-                                Text("Favorite Words:", style: homeScreenWord),
-                                SizedBox(height: 15),
-                                Text(
-                                  "Parrots discovered:",
-                                  style: homeScreenWord,
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 20),
-                            Column(
-                              children: [
-                                Text(
-                                  "${user.seenWords.length}",
-                                  style: dateStyle,
-                                ),
-                                SizedBox(height: 15),
-                                Text(
-                                  user.showWords.length.toString(),
-                                  style: dateStyle,
-                                ),
-                                SizedBox(height: 15),
-                                Text("2", style: dateStyle),
-                                SizedBox(height: 15),
-                                Text(
-                                  user.seenWords.length - 3 >= 0
-                                      ? (user.seenWords.length - 3).toString()
-                                      : "3",
-                                  style: dateStyle,
-                                ),
-                                SizedBox(height: 15),
-                                Text(
-                                  "${user.favoritesWord.length}",
-                                  style: dateStyle,
-                                ),
-                                SizedBox(height: 15),
-                                Text("1", style: dateStyle),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     SizedBox(height: 50),
                     Text("Study days:", style: homeScreenHeaders),
@@ -185,9 +192,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           }).toList(),
                     ),
                     SizedBox(height: 30),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 120),
+                    Center(
                       child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        // Makes the row just wide enough for its content
                         children: [
                           Image.asset(
                             'assets/images/calendor.png',
